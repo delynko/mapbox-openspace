@@ -6,6 +6,13 @@ var map = new mapboxgl.Map({
     zoom: 12.5
 });
 
+map.addControl(new mapboxgl.GeolocateControl({
+    positionOptions: {
+        enableHighAccuracy: true
+    },
+    trackUserLocation: true
+}));
+
 map.on('load', () => {
     let osFeatureLayer;
     let parkLabelLayer;
@@ -35,7 +42,7 @@ map.on('load', () => {
         },
         "paint": {
             "line-color": "#000000",
-            "line-width": 2,
+            "line-width": 3,
             "line-dasharray": [2, 2],
         },
         'filter': ["==", "USER_TYPE", "Multi-Use"]
@@ -52,7 +59,7 @@ map.on('load', () => {
         },
         "paint": {
             "line-color": "#ff0000",
-            "line-width": 2,
+            "line-width": 3,
             "line-dasharray": [2, 2],
         },
         'filter': ["==", "USER_TYPE", "Hiker Only"]
@@ -69,7 +76,7 @@ map.on('load', () => {
         },
         "paint": {
             "line-color": "#ff00ff",
-            "line-width": 2,
+            "line-width": 3,
             "line-dasharray": [2, 2],
         },
         'filter': ["==", "USER_TYPE", "No Bikes"]
