@@ -322,32 +322,3 @@ const descCase = (d) => {
     }
 }
 
-const radioEvents = (map) => {
-    const form = document.getElementsByClassName('base-switch-form');
-    const inputs = form[0].getElementsByTagName('input');
-    let prev = null;
-    for(let i = 0; i < inputs.length; i++) {
-        inputs[i].onclick = function() {
-            // (prev)? console.log(prev.value):null;
-            if(this !== prev) {
-                prev = this;
-            }
-            if (this.value == "JeffcoBasemap") {
-                map.setStyle('mapbox://styles/delynko/cjh10hlxk045o2rn0vzayaxq9');
-                map.on('style.load', () => {
-                    afterLoad();
-                });
-                
-            }
-            if (this.value == 'AerialImagery') {
-                map.setStyle('mapbox://styles/delynko/cjhav901u00qz2rqk79n8acoa');
-                map.on('style.load', () => {
-                    afterLoad();
-                });
-            }
-            console.log(this.value)
-        };
-    }
-}
-
-// .children.getElementsByTagName('input')
