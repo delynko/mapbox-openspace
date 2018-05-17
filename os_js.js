@@ -13,9 +13,16 @@ map.addControl(new mapboxgl.GeolocateControl({
     trackUserLocation: true
 }));
 
+
+
+let osFeatureLayer;
+let parkLabelLayer;
+
 map.on('load', () => {
-    let osFeatureLayer;
-    let parkLabelLayer;
+    afterLoad();
+});
+
+const afterLoad = () => {
     let layers = map.getStyle().layers;
     layers.map((layer) => {
         if (layer.id == 'jeffcoos-public (3)') {
@@ -29,7 +36,8 @@ map.on('load', () => {
 
     mapEvents();
 
-});
+    radioEvents(map);
+};
 
 const addMapSources = () => {
     map.addSource('trail', {
@@ -313,3 +321,33 @@ const descCase = (d) => {
             break;
     }
 }
+
+const radioEvents = (map) => {
+    const form = document.getElementsByClassName('base-switch-form');
+    const inputs = form[0].getElementsByTagName('input');
+    let prev = null;
+    for(let i = 0; i < inputs.length; i++) {
+        inputs[i].onclick = function() {
+            // (prev)? console.log(prev.value):null;
+            if(this !== prev) {
+                prev = this;
+            }
+            if (this.value == "JeffcoBasemap") {
+                map.setStyle('mapbox://styles/delynko/cjh10hlxk045o2rn0vzayaxq9');
+                map.on('style.load', () => {
+                    afterLoad();
+                });
+                
+            }
+            if (this.value == 'AerialImagery') {
+                map.setStyle('mapbox://styles/delynko/cjhav901u00qz2rqk79n8acoa');
+                map.on('style.load', () => {
+                    afterLoad();
+                });
+            }
+            console.log(this.value)
+        };
+    }
+}
+
+// .children.getElementsByTagName('input')

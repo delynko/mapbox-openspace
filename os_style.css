@@ -14,3 +14,12 @@ p {
     padding: 0;
     margin: 0;
 }
+
+#style-menu {
+    position: absolute;
+    background: #fffff0;
+    padding: 10px;
+    font-family: 'Source Sans Pro', sans-serif;
+    top: 10px;
+    left: 10px;
+}
