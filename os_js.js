@@ -20,6 +20,28 @@ let parkLabelLayer;
 
 map.on('load', () => {
     afterLoad();
+    mapEvents();
+});
+
+let x = 2;
+map.on('wheel', () => {
+    
+    if (x % 2 == 0) {
+            map.setStyle('mapbox://styles/delynko/cjhav901u00qz2rqk79n8acoa');
+            map.on('style.load', () => {
+                afterLoad();
+            });
+    }
+    
+    if (x % 2 != 0) {
+        map.setStyle('mapbox://styles/delynko/cjh10hlxk045o2rn0vzayaxq9');
+        map.on('style.load', () => {
+            afterLoad();
+        });
+    }
+
+    x += 1;
+
 });
 
 const afterLoad = () => {
@@ -34,116 +56,131 @@ const afterLoad = () => {
 
     addMapLayers(parkLabelLayer);
 
-    mapEvents();
+    
 
-    radioEvents(map);
 };
 
 const addMapSources = () => {
-    map.addSource('trail', {
-        type: 'vector',
-        url: 'mapbox://delynko.cjh6bllrs00m6hqocrmnbrgc7-3ulxp'
-    });
-
-    map.addSource('os-feature', {
-        type: 'vector',
-        url: 'mapbox://delynko.cjhaodngn00f5lmrut1wsnpz1-7ih1p'
-    });
+    if (map.getSource('trail') == undefined) {
+        map.addSource('trail', {
+            type: 'vector',
+            url: 'mapbox://delynko.cjh6bllrs00m6hqocrmnbrgc7-3ulxp'
+        });
+    }
+    
+    if (map.getSource('os-feature') == undefined) {
+        map.addSource('os-feature', {
+            type: 'vector',
+            url: 'mapbox://delynko.cjhaodngn00f5lmrut1wsnpz1-7ih1p'
+        });
+    }
 }
 
 const addMapLayers = (parkLabelLayer) => {
-    map.addLayer({
-        'id': 'trail',
-        'type': 'line',
-        'source': 'trail',
-        'source-layer': 'OpenSpace_Trail',
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round",
-        },
-        "paint": {
-            "line-color": "#000000",
-            "line-width": 3,
-            "line-dasharray": [2, 2],
-        },
-        'filter': ["==", "USER_TYPE", "Multi-Use"]
-    }, parkLabelLayer);
+    if (map.getLayer('trail') == undefined) {
+        map.addLayer({
+            'id': 'trail',
+            'type': 'line',
+            'source': 'trail',
+            'source-layer': 'OpenSpace_Trail',
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round",
+            },
+            "paint": {
+                "line-color": "#000000",
+                "line-width": 3,
+                "line-dasharray": [2, 2],
+            },
+            'filter': ["==", "USER_TYPE", "Multi-Use"]
+        }, parkLabelLayer);
+    }
+    
+    if (map.getLayer('trail-hikeronly') == undefined) {
+        map.addLayer({
+            'id': 'trail-hikeronly',
+            'type': 'line',
+            'source': 'trail',
+            'source-layer': 'OpenSpace_Trail',
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round",
+            },
+            "paint": {
+                "line-color": "#ff0000",
+                "line-width": 3,
+                "line-dasharray": [2, 2],
+            },
+            'filter': ["==", "USER_TYPE", "Hiker Only"]
+        });
+    }
 
-    map.addLayer({
-        'id': 'trail-hikeronly',
-        'type': 'line',
-        'source': 'trail',
-        'source-layer': 'OpenSpace_Trail',
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round",
-        },
-        "paint": {
-            "line-color": "#ff0000",
-            "line-width": 3,
-            "line-dasharray": [2, 2],
-        },
-        'filter': ["==", "USER_TYPE", "Hiker Only"]
-    });
+    if (map.getLayer('trail-nobikes') == undefined) {
+        map.addLayer({
+            'id': 'trail-nobikes',
+            'type': 'line',
+            'source': 'trail',
+            'source-layer': 'OpenSpace_Trail',
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round",
+            },
+            "paint": {
+                "line-color": "#ff00ff",
+                "line-width": 3,
+                "line-dasharray": [2, 2],
+            },
+            'filter': ["==", "USER_TYPE", "No Bikes"]
+        });
+    }
 
-    map.addLayer({
-        'id': 'trail-nobikes',
-        'type': 'line',
-        'source': 'trail',
-        'source-layer': 'OpenSpace_Trail',
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round",
-        },
-        "paint": {
-            "line-color": "#ff00ff",
-            "line-width": 3,
-            "line-dasharray": [2, 2],
-        },
-        'filter': ["==", "USER_TYPE", "No Bikes"]
-    });
+    if (map.getLayer('trail-labels') == undefined) {
+        map.addLayer({
+            'id': 'trail-labels',
+            'type': 'symbol',
+            'source': 'trail',
+            'source-layer': 'OpenSpace_Trail',
+            'layout': {
+                "symbol-placement": "line",
+                "text-field": "{TRAIL_NAME}",
+                "text-letter-spacing": .2,
+                "text-offset": [0, -1],
+                "text-size": 12
+            }
+        });
+    }
 
-    map.addLayer({
-        'id': 'trail-labels',
-        'type': 'symbol',
-        'source': 'trail',
-        'source-layer': 'OpenSpace_Trail',
-        'layout': {
-            "symbol-placement": "line",
-            "text-field": "{TRAIL_NAME}",
-            "text-letter-spacing": .2,
-            "text-offset": [0, -1],
-            "text-size": 12
-        }
-    });
+    if (map.getLayer('os-feature') == undefined) {
+        map.addLayer({
+            'id': 'os-feature',
+            'type': 'symbol',
+            'source': 'os-feature',
+            'source-layer': 'OpenSpace_Feature',
+            'layout': {
+                'icon-image': '{TYPE}',
+                'icon-size': .8,
+            }
+        });
+    }
 
-    map.addLayer({
-        'id': 'os-feature',
-        'type': 'symbol',
-        'source': 'os-feature',
-        'source-layer': 'OpenSpace_Feature',
-        'layout': {
-            'icon-image': '{TYPE}',
-            'icon-size': .8,
-        }
-    });
+    if (map.getLayer('trail-hover') == undefined) {
+        map.addLayer({
+            'id': 'trail-hover',
+            'type': 'line',
+            'source': 'trail',
+            'source-layer': 'OpenSpace_Trail',
+            "layout": {
+                "line-join": "round",
+                "line-cap": "round"
+            },
+            "paint": {
+                "line-color": "#ff0000",
+                "line-width": 4
+            },
+            'filter': ["==", "MAP_LABEL", ""]
 
-    map.addLayer({
-        'id': 'trail-hover',
-        'type': 'line',
-        'source': 'trail',
-        'source-layer': 'OpenSpace_Trail',
-        "layout": {
-            "line-join": "round",
-            "line-cap": "round"
-        },
-        "paint": {
-            "line-color": "#ff0000",
-            "line-width": 4
-        },
-        'filter': ["==", "MAP_LABEL", ""]
-
-    });
+        });
+    }
 }
 
 const mapEvents = () => {
