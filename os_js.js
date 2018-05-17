@@ -26,11 +26,22 @@ map.on('load', () => {
         }
     })
 
+    addMapSources();
+
+    addMapLayers(osFeatureLayer, parkLabelLayer);
+
+    mapEvents();
+
+});
+
+const addMapSources = () => {
     map.addSource('trail', {
         type: 'vector',
         url: 'mapbox://delynko.cjh6bllrs00m6hqocrmnbrgc7-3ulxp'
     });
+}
 
+const addMapLayers = (osFeatureLayer, parkLabelLayer) => {
     map.addLayer({
         'id': 'trail',
         'type': 'line',
@@ -112,7 +123,9 @@ map.on('load', () => {
         'filter': ["==", "MAP_LABEL", ""]
 
     }, osFeatureLayer);
+}
 
+const mapEvents = () => {
     map.on('click', 'trail', (e) => {
         
         const coordinates = [e.lngLat.lng, e.lngLat.lat];
@@ -121,7 +134,7 @@ map.on('load', () => {
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
                                 <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
                                 <p>Distance: <strong>${e.features[0].properties.MILEAGE_RO}</strong></p>
-                                <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 350px"/>
+                                <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 100px"/>
                             </div>`
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
@@ -141,7 +154,7 @@ map.on('load', () => {
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
                                 <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
                                 <p>Distance: <strong>${e.features[0].properties.MILEAGE_RO}</strong></p>
-                                <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 350px"/>
+                                <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 100px"/>
                             </div>`
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
@@ -161,7 +174,7 @@ map.on('load', () => {
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
                                 <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
                                 <p>Distance: <strong>${e.features[0].properties.MILEAGE_RO}</strong></p>
-                                <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 350px"/>
+                                <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 100px"/>
                             </div>`
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
@@ -220,12 +233,4 @@ map.on('load', () => {
     map.on("mouseleave", 'trail-hikeronly', function() {
         map.setFilter("trail-hover", ["==", "MAP_LABEL", ""]);
     });
-
-});
-
-
-
-
-
-
-
+}
