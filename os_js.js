@@ -18,17 +18,14 @@ map.on('load', () => {
     let parkLabelLayer;
     let layers = map.getStyle().layers;
     layers.map((layer) => {
-        if (layer.id == 'openspace-feature'){
-            osFeatureLayer = layer.id;
-        }
         if (layer.id == 'jeffcoos-public (3)') {
             parkLabelLayer = layer.id;
         }
-    })
+    });
 
     addMapSources();
 
-    addMapLayers(osFeatureLayer, parkLabelLayer);
+    addMapLayers(parkLabelLayer);
 
     mapEvents();
 
@@ -39,9 +36,14 @@ const addMapSources = () => {
         type: 'vector',
         url: 'mapbox://delynko.cjh6bllrs00m6hqocrmnbrgc7-3ulxp'
     });
+
+    map.addSource('os-feature', {
+        type: 'vector',
+        url: 'mapbox://delynko.cjhaodngn00f5lmrut1wsnpz1-7ih1p'
+    });
 }
 
-const addMapLayers = (osFeatureLayer, parkLabelLayer) => {
+const addMapLayers = (parkLabelLayer) => {
     map.addLayer({
         'id': 'trail',
         'type': 'line',
@@ -57,7 +59,7 @@ const addMapLayers = (osFeatureLayer, parkLabelLayer) => {
             "line-dasharray": [2, 2],
         },
         'filter': ["==", "USER_TYPE", "Multi-Use"]
-    }, parkLabelLayer, osFeatureLayer);
+    }, parkLabelLayer);
 
     map.addLayer({
         'id': 'trail-hikeronly',
@@ -74,7 +76,7 @@ const addMapLayers = (osFeatureLayer, parkLabelLayer) => {
             "line-dasharray": [2, 2],
         },
         'filter': ["==", "USER_TYPE", "Hiker Only"]
-    }, osFeatureLayer);
+    });
 
     map.addLayer({
         'id': 'trail-nobikes',
@@ -91,7 +93,7 @@ const addMapLayers = (osFeatureLayer, parkLabelLayer) => {
             "line-dasharray": [2, 2],
         },
         'filter': ["==", "USER_TYPE", "No Bikes"]
-    }, osFeatureLayer);
+    });
 
     map.addLayer({
         'id': 'trail-labels',
@@ -105,7 +107,18 @@ const addMapLayers = (osFeatureLayer, parkLabelLayer) => {
             "text-offset": [0, -1],
             "text-size": 12
         }
-    }, osFeatureLayer);
+    });
+
+    map.addLayer({
+        'id': 'os-feature',
+        'type': 'symbol',
+        'source': 'os-feature',
+        'source-layer': 'OpenSpace_Feature',
+        'layout': {
+            'icon-image': '{TYPE}',
+            'icon-size': .8,
+        }
+    });
 
     map.addLayer({
         'id': 'trail-hover',
@@ -122,7 +135,7 @@ const addMapLayers = (osFeatureLayer, parkLabelLayer) => {
         },
         'filter': ["==", "MAP_LABEL", ""]
 
-    }, osFeatureLayer);
+    });
 }
 
 const mapEvents = () => {
@@ -130,6 +143,7 @@ const mapEvents = () => {
         
         const coordinates = [e.lngLat.lng, e.lngLat.lat];
         const description = `<div>
+                                <br>
                                 <p>Trail Name: <strong>${e.features[0].properties.TRAIL_NAME}</strong></p>
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
                                 <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
@@ -150,6 +164,7 @@ const mapEvents = () => {
         
         const coordinates = [e.lngLat.lng, e.lngLat.lat];
         const description = `<div>
+                                <br>
                                 <p>Trail Name: <strong>${e.features[0].properties.TRAIL_NAME}</strong></p>
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
                                 <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
@@ -170,6 +185,7 @@ const mapEvents = () => {
         
         const coordinates = [e.lngLat.lng, e.lngLat.lat];
         const description = `<div>
+                                <br>
                                 <p>Trail Name: <strong>${e.features[0].properties.TRAIL_NAME}</strong></p>
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
                                 <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
@@ -184,6 +200,43 @@ const mapEvents = () => {
             .setLngLat(coordinates)
             .setHTML(description)
             .addTo(map);
+    });
+
+    map.on('click', 'os-feature', function (e) {
+        var coordinates = e.features[0].geometry.coordinates.slice();
+        var description = e.features[0].properties.TYPE;
+
+        const name = (dataName) => {
+            if (dataName) {
+                return dataName;
+            } else {
+                return '';
+            }
+        }
+
+        const info = `<div>
+                        <br>
+                        <p>Feature Type: <strong>${descCase(description)}</strong></p>
+                        <p>Name: <strong>${name(e.features[0].properties.NAME)}</strong></p>
+                      </div>`;
+        
+
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+
+        new mapboxgl.Popup()
+            .setLngLat(coordinates)
+            .setHTML(info)
+            .addTo(map);
+    });
+
+    map.on('mouseenter', 'os-feature', function () {
+        map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', 'os-feature', function () {
+        map.getCanvas().style.cursor = '';
     });
 
     map.on('mouseenter', 'trail', function () {
@@ -233,4 +286,30 @@ const mapEvents = () => {
     map.on("mouseleave", 'trail-hikeronly', function() {
         map.setFilter("trail-hover", ["==", "MAP_LABEL", ""]);
     });
+}
+
+const descCase = (d) => {
+    switch(d) {
+        case 'restroom':
+            return 'Restroom';
+            break;
+        case 'parking':
+            return 'Parking';
+            break;
+        case 'accesspoint':
+            return 'Access Point';
+            break;
+        case 'residence':
+            return 'Ranger/Caretaker Residence';
+            break;
+        case 'scenicview':
+            return 'Scenic View';
+            break;
+        case 'campground':
+            return 'Campground';
+            break;
+        default:
+            return '';
+            break;
+    }
 }
