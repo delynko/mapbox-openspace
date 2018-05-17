@@ -13,8 +13,9 @@ map.addControl(new mapboxgl.GeolocateControl({
     trackUserLocation: true
 }));
 
+const button = document.getElementById('basemap-button');
 
-
+let x = 2;
 let osFeatureLayer;
 let parkLabelLayer;
 
@@ -22,43 +23,6 @@ map.on('load', () => {
     afterLoad();
     mapEvents();
 });
-
-let x = 2;
-map.on('wheel', () => {
-    
-    if (x % 2 == 0) {
-            map.setStyle('mapbox://styles/delynko/cjhav901u00qz2rqk79n8acoa');
-            map.on('style.load', () => {
-                afterLoad();
-            });
-    }
-    
-    if (x % 2 != 0) {
-        map.setStyle('mapbox://styles/delynko/cjh10hlxk045o2rn0vzayaxq9');
-        map.on('style.load', () => {
-            afterLoad();
-        });
-    }
-
-    x += 1;
-
-});
-
-const afterLoad = () => {
-    let layers = map.getStyle().layers;
-    layers.map((layer) => {
-        if (layer.id == 'jeffcoos-public (3)') {
-            parkLabelLayer = layer.id;
-        }
-    });
-
-    addMapSources();
-
-    addMapLayers(parkLabelLayer);
-
-    
-
-};
 
 const addMapSources = () => {
     if (map.getSource('trail') == undefined) {
@@ -359,3 +323,40 @@ const descCase = (d) => {
     }
 }
 
+button.addEventListener('click', () => {
+
+    button.innerHTML == 'Jeffco Basemap' ? button.innerHTML = 'Aerial Imagery' : button.innerHTML = 'Jeffco Basemap';
+    
+    if (x % 2 == 0) {
+            map.setStyle('mapbox://styles/delynko/cjhav901u00qz2rqk79n8acoa');
+            map.on('style.load', () => {
+                afterLoad();
+            });
+    }
+    
+    if (x % 2 != 0) {
+        map.setStyle('mapbox://styles/delynko/cjh10hlxk045o2rn0vzayaxq9');
+        map.on('style.load', () => {
+            afterLoad();
+        });
+    }
+
+    x += 1;
+
+});
+
+const afterLoad = () => {
+    let layers = map.getStyle().layers;
+    layers.map((layer) => {
+        if (layer.id == 'jeffcoos-public (3)') {
+            parkLabelLayer = layer.id;
+        }
+    });
+
+    addMapSources();
+
+    addMapLayers(parkLabelLayer);
+
+    
+
+};
