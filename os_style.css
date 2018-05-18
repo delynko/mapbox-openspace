@@ -16,16 +16,19 @@ p {
 }
 
 .basemap-button {
-    background-color: #D1DFD6;
+    line-height: 30px;
+    text-align: center;
+    background-color: #ffffff;
+    border: 2px solid rgba(10, 10, 10, .1);
     border-radius: 3px;
-    border-color:#395077;
-    color: #395077;
-    top: 20px;
-    left: 20px;
+    color: #333333;
+    top: 10px;
+    left: 10px;
     position: absolute;
     width: 120px;
-    height: 35px;
+    height: 30px;
     font-family: 'Source Sans Pro', sans-serif;
     font-size: 14px;
     font-weight: bold;
+    background-clip: padding-box;
 }
