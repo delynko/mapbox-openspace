@@ -23,9 +23,9 @@ p {
     top: 20px;
     left: 20px;
     position: absolute;
-    width: 100px;
-    height: 55px;
+    width: 120px;
+    height: 35px;
     font-family: 'Source Sans Pro', sans-serif;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
 }

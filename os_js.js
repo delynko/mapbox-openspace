@@ -161,7 +161,7 @@ const mapEvents = () => {
                             </div>`
 
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+            coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360; 
         }
         new mapboxgl.Popup()
             .setLngLat(coordinates)
@@ -323,6 +323,22 @@ const descCase = (d) => {
     }
 }
 
+const afterLoad = () => {
+    let layers = map.getStyle().layers;
+    layers.map((layer) => {
+        if (layer.id == 'jeffcoos-public (3)') {
+            parkLabelLayer = layer.id;
+        }
+    });
+
+    addMapSources();
+
+    addMapLayers(parkLabelLayer);
+
+    
+
+};
+
 button.addEventListener('click', () => {
 
     button.innerHTML == 'Jeffco Basemap' ? button.innerHTML = 'Aerial Imagery' : button.innerHTML = 'Jeffco Basemap';
@@ -344,19 +360,3 @@ button.addEventListener('click', () => {
     x += 1;
 
 });
-
-const afterLoad = () => {
-    let layers = map.getStyle().layers;
-    layers.map((layer) => {
-        if (layer.id == 'jeffcoos-public (3)') {
-            parkLabelLayer = layer.id;
-        }
-    });
-
-    addMapSources();
-
-    addMapLayers(parkLabelLayer);
-
-    
-
-};
