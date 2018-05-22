@@ -19,16 +19,24 @@ let x = 2;
 let osFeatureLayer;
 let parkLabelLayer;
 
+let trailData;
+
+$.getJSON('https://services3.arcgis.com/9ntQlfNHEhmpX4cl/arcgis/rest/services/Open_Space_Trail/FeatureServer/1/query?where=1%3D1&outFields=*&outSR=4326&f=geojson', (data) => {
+    trailData = data;
+});
+
 map.on('load', () => {
-    afterLoad();
-    mapEvents();
+    setTimeout(() => {
+        afterLoad();
+        mapEvents();
+    });
 });
 
 const addMapSources = () => {
     if (map.getSource('trail') == undefined) {
         map.addSource('trail', {
-            type: 'vector',
-            url: 'mapbox://delynko.cjh6bllrs00m6hqocrmnbrgc7-3ulxp'
+            type: 'geojson',
+            data: trailData
         });
     }
     
@@ -46,7 +54,7 @@ const addMapLayers = (parkLabelLayer) => {
             'id': 'trail',
             'type': 'line',
             'source': 'trail',
-            'source-layer': 'OpenSpace_Trail',
+            // 'source-layer': 'OpenSpace_Trail',
             "layout": {
                 "line-join": "round",
                 "line-cap": "round",
@@ -65,7 +73,7 @@ const addMapLayers = (parkLabelLayer) => {
             'id': 'trail-hikeronly',
             'type': 'line',
             'source': 'trail',
-            'source-layer': 'OpenSpace_Trail',
+            // 'source-layer': 'OpenSpace_Trail',
             "layout": {
                 "line-join": "round",
                 "line-cap": "round",
@@ -84,7 +92,7 @@ const addMapLayers = (parkLabelLayer) => {
             'id': 'trail-nobikes',
             'type': 'line',
             'source': 'trail',
-            'source-layer': 'OpenSpace_Trail',
+            // 'source-layer': 'OpenSpace_Trail',
             "layout": {
                 "line-join": "round",
                 "line-cap": "round",
@@ -103,7 +111,7 @@ const addMapLayers = (parkLabelLayer) => {
             'id': 'trail-labels',
             'type': 'symbol',
             'source': 'trail',
-            'source-layer': 'OpenSpace_Trail',
+            // 'source-layer': 'OpenSpace_Trail',
             'layout': {
                 "symbol-placement": "line",
                 "text-field": "{TRAIL_NAME}",
@@ -132,7 +140,7 @@ const addMapLayers = (parkLabelLayer) => {
             'id': 'trail-hover',
             'type': 'line',
             'source': 'trail',
-            'source-layer': 'OpenSpace_Trail',
+            // 'source-layer': 'OpenSpace_Trail',
             "layout": {
                 "line-join": "round",
                 "line-cap": "round"
