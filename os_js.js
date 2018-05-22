@@ -163,8 +163,8 @@ const mapEvents = () => {
                                 <br>
                                 <p>Trail Name: <strong>${e.features[0].properties.TRAIL_NAME}</strong></p>
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
-                                <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
-                                <p>Distance: <strong>${e.features[0].properties.MILEAGE_RO}</strong></p>
+                                <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFFICULTY_RATING}</strong></p>
+                                <p>Distance: <strong>${e.features[0].properties.MILEAGE_ROUNDED}</strong></p>
                                 <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 100px"/>
                             </div>`
 
@@ -184,8 +184,8 @@ const mapEvents = () => {
                                 <br>
                                 <p>Trail Name: <strong>${e.features[0].properties.TRAIL_NAME}</strong></p>
                                 <p>Usage: <strong>${e.features[0].properties.USER_TYPE}</strong></p>
-                                <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFF}</strong></p>
-                                <p>Distance: <strong>${e.features[0].properties.MILEAGE_RO}</strong></p>
+                                <p>Difficulty: <strong>${e.features[0].properties.TRAIL_DIFFICULTY_RATING}</strong></p>
+                                <p>Distance: <strong>${e.features[0].properties.MILEAGE_ROUNDED}</strong></p>
                                 <img src="https://hikingtohealthy.files.wordpress.com/2012/10/rawhide-trail-1.jpg" style="height: 100px"/>
                             </div>`
 
