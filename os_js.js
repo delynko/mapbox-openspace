@@ -153,6 +153,48 @@ const addMapLayers = (parkLabelLayer) => {
 
         });
     }
+
+    if (map.getLayer('trail-most-diff') == undefined) {
+        map.addLayer({
+            'id': 'trail-most-diff',
+            'type': 'symbol',
+            'source': 'trail',
+            // 'source-layer': 'OpenSpace_Trail',
+            "layout": {
+                'icon-image': 'Most%20Difficult',
+                'icon-size': .16
+            },
+            'filter': ["==", "TRAIL_DIFFICULTY_RATING", "Most Difficult"]
+        });
+    }
+
+    if (map.getLayer('trail-more-diff') == undefined) {
+        map.addLayer({
+            'id': 'trail-more-diff',
+            'type': 'symbol',
+            'source': 'trail',
+            // 'source-layer': 'OpenSpace_Trail',
+            "layout": {
+                'icon-image': 'More%20Difficult',
+                'icon-size': .8
+            },
+            'filter': ["==", "TRAIL_DIFFICULTY_RATING", "More Difficult"]
+        });
+    }
+
+    if (map.getLayer('trail-least-diff') == undefined) {
+        map.addLayer({
+            'id': 'trail-least-diff',
+            'type': 'symbol',
+            'source': 'trail',
+            // 'source-layer': 'OpenSpace_Trail',
+            "layout": {
+                'icon-image': 'Least%20Difficult',
+                'icon-size': .8
+            },
+            'filter': ["==", "TRAIL_DIFFICULTY_RATING", "Least Difficult"]
+        });
+    }
 }
 
 const mapEvents = () => {
@@ -329,7 +371,7 @@ const descCase = (d) => {
             return '';
             break;
     }
-}
+};
 
 const afterLoad = () => {
     let layers = map.getStyle().layers;
