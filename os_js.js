@@ -3,7 +3,7 @@ var map = new mapboxgl.Map({
     container: 'map',
     style: 'mapbox://styles/delynko/cjh10hlxk045o2rn0vzayaxq9',
     center: [-105.27829964111288, 39.82865670291332],
-    zoom: 12.5
+    zoom: 12.83
 });
 
 map.addControl(new mapboxgl.GeolocateControl({
