@@ -6,8 +6,6 @@ var map = new mapboxgl.Map({
     zoom: 12.83
 });
 
-map.addControl(new mapboxgl.FullscreenControl());
-
 map.addControl(new mapboxgl.GeolocateControl({
     positionOptions: {
         enableHighAccuracy: true
